@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Playnext — Find your next game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="wrap">
+    <nav class="glass">
+      <button class="brand" onclick="window.scrollTo({top:0,behavior:'smooth'})"><span class="brand-mark">⌁</span><span>playnext<small>find your fit</small></span></button>
+      <label class="search"><span style="color:rgba(255,255,255,.35)">⌕</span><input id="search" placeholder="Search title, developer, platform, or genre…" autocomplete="off"><button class="search-clear" id="search-clear" type="button" aria-label="Clear search">✕</button></label>
+      <div class="actions">
+        <button class="iconbtn" id="nav-want"><span class="ico">♡</span><span class="label"> Want</span><span class="count hide" id="badge-want">0</span></button>
+        <button class="iconbtn" id="nav-completed"><span class="ico">✓</span><span class="label"> Done</span><span class="count hide" id="badge-completed">0</span></button>
+        <button class="iconbtn" id="nav-cart"><span class="ico"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></span><span class="label"> Cart</span><span class="count hide" id="badge-cart">0</span></button>
+        <button class="iconbtn" id="bell" title="Offers"><span class="ico">🔔</span><span class="count blue hide" id="badge-offers">0</span></button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <section class="hero glass">
+      <div>
+        <div class="eyebrow">⌁ Your next great game</div>
+        <h1>Find the game that fits <span class="gradient">right now.</span></h1>
+        <p>Playnext scores thousands of games against your mood, your energy and your time — then keeps the good ones in one place.</p>
+      </div>
+      <div class="hero-stats">
+        <div><strong id="stat-games">…</strong><span>Games</span></div>
+        <div><strong id="stat-enriched">…</strong><span>Enriched</span></div>
+      </div>
+    </section>
+
+    <div id="notice"></div>
+
+    <section class="layout view active" id="view-browse">
+      <aside class="panel glass side">
+        <div class="eyebrow">Mood match</div>
+        <h2>Tune the vibe.</h2>
+        <p class="subtle" style="margin:6px 0 0;font-size:12.5px">No right answers. Slide toward what sounds good tonight.</p>
+        <div id="sliders"></div>
+        <label class="switch"><input type="checkbox" id="beginner"> Beginner friendly</label>
+        <label class="switch"><input type="checkbox" id="clear-mood"> Clear mood <span class="hint" style="font-weight:400">reset sliders &amp; browse all</span></label>
+        <div class="profile"><b>✦ Your match profile</b><p id="profile-text" style="margin:6px 0 0">A balanced session with room to wander.</p></div>
+        <div class="assistant">
+          <div class="eyebrow">Ask Playnext</div>
+          <div class="assistant-row">
+            <input id="assistant-input" placeholder="cozy game to unwind…" autocomplete="off">
+            <button class="btn" id="ask">Find ›</button>
+          </div>
+          <div id="assistant-reply" class="assistant-reply"></div>
+          <div id="assistant-results" class="assistant-results"></div>
+        </div>
+      </aside>
+
+      <div>
+        <div class="section-top">
+          <div>
+            <div class="eyebrow">Recommended for you</div>
+            <h2>A better kind of browse.</h2>
+            <p class="subtle" style="margin-top:7px;font-size:13px"><b id="result-count">…</b> games live-scored against your mood sliders.</p>
+          </div>
+        </div>
+        <div class="filters">
+          <select id="f-console"></select>
+          <select id="f-developer"></select>
+          <select id="f-genre"></select>
+          <label class="field">Min IGN <input id="f-min" type="range" min="1" max="10" value="1"><b id="f-min-out">1</b></label>
+          <select id="f-sort">
+            <option value="fit">Sort: Mood fit</option>
+            <option value="ign">Sort: IGN score</option>
+            <option value="ign_asc">Sort: IGN (low→high)</option>
+            <option value="meta">Sort: Metacritic</option>
+            <option value="new">Sort: Newest</option>
+            <option value="title">Sort: Title A–Z</option>
+          </select>
+        </div>
+        <div id="grid" class="grid"><div class="skeleton card"></div><div class="skeleton card"></div><div class="skeleton card"></div><div class="skeleton card"></div><div class="skeleton card"></div><div class="skeleton card"></div><div class="skeleton card"></div><div class="skeleton card"></div></div>
+        <div id="pager" class="pager"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="scrim" class="scrim"></div>
+
+  <aside id="drawer" class="drawer">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div><div class="eyebrow">Your shelf</div><h2 style="margin:6px 0 0;font-size:24px;letter-spacing:-.03em">Lists</h2></div>
+      <button class="mini" id="drawer-close">✕</button>
+    </div>
+    <div id="tabs" class="tabs"></div>
+    <div id="list-body"></div>
+  </aside>
+
+  <div id="offers-panel" class="offers-panel glass">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <b>🔔 Active offers</b><span class="hint">CheapShark · 30 min cache</span>
+    </div>
+    <div id="offers-body"></div>
+  </div>
+
+  <div id="modal" class="modal">
+    <div id="detail" class="modal-box glass"></div>
+  </div>
+
+  <div id="toasts" class="toasts"></div>
+
+  <script src="js/recommender.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/assistant.js"></script>
+  <script src="js/lists.js"></script>
+  <script src="js/offers.js"></script>
+  <script src="js/ui.js"></script>
+  <script>
+    (async function boot() {
+      try {
+        await Data.load();
+      } catch (e) {
+        document.getElementById('grid').innerHTML = '<div class="empty" style="grid-column:1/-1">Could not load Games.csv. Start the server with <b>npm start</b> and open http://localhost:3000</div>';
+        console.error(e);
+        return;
+      }
+      UI.init();
+    })();
+  </script>
+</body>
+</html>
